@@ -331,6 +331,42 @@ header, section, footer { position: relative; z-index: 1; }
 .s7 { top: 79%; right: 21%; font-size: 16px; animation-delay: .6s; }
 .s8 { top: 9%; right: 38%; font-size: 12px; animation-delay: 1.9s; }
 
+/* 小太阳：柔光圆盘 + 一圈缓缓转的短光芒 */
+.sun {
+  position: absolute;
+  top: 10%; right: 9%;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 40%, #fff4da, #ffe3ad);
+  box-shadow: 0 0 16px 5px rgba(255, 216, 150, 0.5);
+  animation: breathe 5s ease-in-out infinite;
+}
+.sun::before {
+  content: "";
+  position: absolute; inset: -9px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255, 205, 130, 0.55) 0deg 4deg, transparent 4deg 30deg);
+  -webkit-mask: radial-gradient(circle, transparent 56%, #000 58%, #000 70%, transparent 72%);
+          mask: radial-gradient(circle, transparent 56%, #000 58%, #000 70%, transparent 72%);
+  animation: spin 46s linear infinite;
+}
+
+/* 小月亮：box-shadow 做月牙，不依赖背景色 */
+.moon {
+  position: absolute;
+  top: 22%; left: 8%;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  box-shadow: inset -8px -4px 0 0 #d9e1f2, 0 0 14px 3px rgba(198, 210, 236, 0.42);
+  animation: breathe 6.5s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.5;  transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.06); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* 特性小胶囊 */
 .chips {
   margin-top: 18px;
