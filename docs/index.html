@@ -5,9 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Claude 桌面宠物 ٩(◕‿◕)۶ — 会告诉你 Claude Code 在忙什么的小宠物</title>
   <meta name="description" content="一只悬浮在桌面上的小宠物，实时显示 Claude Code 正在干嘛。会冒爱心、能戳、摸鱼久了会打呼睡着。" />
-  <link rel="stylesheet" href="pet.css?v=20260724b" />
+  <link rel="stylesheet" href="pet.css?v=20260724c" />
 </head>
 <body>
+  <!-- 背景装饰：浮动柔光球 + 闪烁星星 -->
+  <div class="bg-decor" aria-hidden="true">
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+    <span class="blob b4"></span>
+    <span class="sparkle s1">✦</span>
+    <span class="sparkle s2">✧</span>
+    <span class="sparkle s3">✦</span>
+    <span class="sparkle s4">✧</span>
+    <span class="sparkle s5">✦</span>
+    <span class="sparkle s6">✧</span>
+    <span class="sparkle s7">✦</span>
+    <span class="sparkle s8">✧</span>
+  </div>
+
   <header>
     <h1>Claude 桌面宠物</h1>
     <p class="tagline">一只悬浮在桌面上的小宠物，实时告诉你 Claude Code 正在忙什么 ٩(◕‿◕)۶</p>
@@ -37,6 +53,15 @@
       <span id="state-name">摸鱼待命中 💤</span>
       <p class="hint">👆 点它戳一下 · 状态自动切换 · 它还会自己随机换马卡龙色 🌈</p>
       <div id="swatches" title="点色卡换色，或让它自己变"></div>
+
+      <div class="chips">
+        <span class="chip">🖥️ Electron 桌宠</span>
+        <span class="chip">🎛️ 22 种实时状态</span>
+        <span class="chip">🍬 5 色马卡龙自动换</span>
+        <span class="chip">💕 会冒爱心 · 能戳</span>
+        <span class="chip">💤 摸鱼久了会睡着</span>
+        <span class="chip">🩵 开源 · MIT</span>
+      </div>
     </div>
   </section>
 
@@ -52,17 +77,18 @@ git clone https://github.com/sunnygirl-0106/claude-desktop-pet.git
 cd claude-desktop-pet
 npm install
 npm start   <span class="c"># 宠物就出现在桌面右下角啦</span></pre>
-    <p style="margin-top:16px;font-size:13px;color:#a06a90;">
+    <p style="margin-top:16px;font-size:13px;color:#7d8ba0;">
       再按 README 把 hook 接到 <code>~/.claude/settings.json</code>，它就能实时读出 Claude Code 在干嘛 💕
     </p>
     <a class="btn" href="https://github.com/sunnygirl-0106/claude-desktop-pet">看 GitHub 仓库 →</a>
   </section>
 
   <footer>
+    <div class="footer-flourish">♡</div>
     用 💗 手作 · 由 Claude Code hooks 驱动 ·
     <a href="https://github.com/sunnygirl-0106/claude-desktop-pet">sunnygirl-0106/claude-desktop-pet</a>
   </footer>
 
-  <script src="demo.js?v=20260724b"></script>
+  <script src="demo.js?v=20260724c"></script>
 </body>
 </html>

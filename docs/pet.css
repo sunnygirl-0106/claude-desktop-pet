@@ -286,3 +286,99 @@ header h1 {
 
 footer { margin-top: 50px; font-size: 13px; color: #93a0b2; }
 footer a { color: var(--pink); text-decoration: none; }
+
+/* ══════════════════════════════════════
+   页面装饰：浮动光晕 + 闪烁星星 + 花边
+   ══════════════════════════════════════ */
+body { position: relative; overflow-x: hidden; }
+header, section, footer { position: relative; z-index: 1; }
+
+/* 背景柔光球（aurora） */
+.bg-decor { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(55px); opacity: 0.5;
+  animation: floatBlob 18s ease-in-out infinite;
+}
+.blob.b1 { width: 320px; height: 320px; top: -70px; left: -80px; background: #cfe0f5; }
+.blob.b2 { width: 280px; height: 280px; top: 18%; right: -90px; background: #ded6f3; animation-delay: -4s; }
+.blob.b3 { width: 300px; height: 300px; bottom: 10%; left: -70px; background: #d3efe2; animation-delay: -8s; }
+.blob.b4 { width: 240px; height: 240px; bottom: -60px; right: 6%; background: #f3e6da; opacity: 0.42; animation-delay: -12s; }
+@keyframes floatBlob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(22px, -26px) scale(1.08); }
+  66%      { transform: translate(-16px, 18px) scale(0.95); }
+}
+
+/* 闪烁小星星 */
+.sparkle {
+  position: absolute;
+  color: #b8c8dc;
+  font-size: 14px;
+  text-shadow: 0 0 6px rgba(180, 200, 225, 0.7);
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.12; transform: scale(0.7); }
+  50%      { opacity: 0.9;  transform: scale(1.1); }
+}
+.s1 { top: 14%; left: 11%; animation-delay: 0s; }
+.s2 { top: 21%; right: 15%; font-size: 11px; animation-delay: .8s; }
+.s3 { top: 39%; left: 7%; font-size: 18px; animation-delay: 1.6s; }
+.s4 { top: 55%; right: 9%; animation-delay: .4s; }
+.s5 { top: 69%; left: 15%; font-size: 12px; animation-delay: 2.2s; }
+.s6 { top: 31%; left: 46%; font-size: 10px; animation-delay: 1.2s; }
+.s7 { top: 79%; right: 21%; font-size: 16px; animation-delay: .6s; }
+.s8 { top: 9%; right: 38%; font-size: 12px; animation-delay: 1.9s; }
+
+/* 特性小胶囊 */
+.chips {
+  margin-top: 18px;
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+}
+.chip {
+  font-size: 12px; color: #5a6b80;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid #dbe4ee;
+  border-radius: 999px;
+  padding: 5px 12px;
+  box-shadow: 0 2px 6px rgba(120, 145, 180, 0.12);
+  backdrop-filter: blur(4px);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.chip:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(110, 140, 180, 0.22); }
+
+/* 标题小花边 */
+.gallery h2, .install h2 { position: relative; }
+.gallery h2::after, .install h2::after {
+  content: "";
+  display: block;
+  width: 46px; height: 3px;
+  margin: 12px auto 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #a9c2dd, #c9bfe4);
+}
+
+/* 舞台外描一圈柔白边，像个屏幕 */
+.stage { border: 1px solid rgba(255, 255, 255, 0.6); }
+
+/* 卡片顶部渐隐高光 */
+.card { position: relative; overflow: hidden; }
+.card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, #a9c2dd, #cbbfe6, #b6dcc9);
+  opacity: 0; transition: opacity 0.2s;
+}
+.card:hover::before { opacity: 1; }
+
+/* 页脚小花边 */
+.footer-flourish {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin: 0 auto 14px; color: #b3c0d0; font-size: 14px;
+}
+.footer-flourish::before, .footer-flourish::after {
+  content: ""; width: 70px; height: 1px;
+}
+.footer-flourish::before { background: linear-gradient(90deg, transparent, #cdd8e6); }
+.footer-flourish::after  { background: linear-gradient(90deg, #cdd8e6, transparent); }
