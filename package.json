@@ -1,0 +1,14 @@
+{
+  "name": "claude-desktop-pet",
+  "version": "1.0.0",
+  "description": "一个悬浮在桌面上的 Claude Code 小宠物，实时显示我正在干嘛 (｡･ᴗ･｡)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "you + Claude",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^32.0.0"
+  }
+}

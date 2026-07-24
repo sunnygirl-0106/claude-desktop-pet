@@ -1,0 +1,257 @@
+/* ══════════════════════════════════════════════════════
+   Claude 桌面宠物 · 网页演示样式
+   宠物视觉部分与桌面版一致，另加落地页/画廊样式
+   ══════════════════════════════════════════════════════ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --pink: #e64c8b;
+  --pink-soft: #ffd6ef;
+  --ink: #4a3a52;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Yuanti SC", "YuanTi SC", "Chalkboard SE", "PingFang SC",
+    "Hiragino Sans GB", sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -10%, #ffe9f4 0%, rgba(255, 233, 244, 0) 60%),
+    linear-gradient(160deg, #fff7fb 0%, #ffeef7 40%, #fce9ff 100%);
+  text-align: center;
+  padding-bottom: 60px;
+}
+
+/* ── 顶部标题 ── */
+header { padding: 46px 20px 8px; }
+header h1 {
+  font-size: 32px;
+  color: var(--pink);
+  letter-spacing: 1px;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+.tagline {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #a06a90;
+}
+
+/* ── Hero：深色「桌面」，秀发光 ── */
+.hero { margin: 26px auto 8px; }
+.stage {
+  position: relative;
+  width: 320px;
+  height: 240px;
+  margin: 0 auto;
+  border-radius: 18px;
+  background:
+    radial-gradient(420px 180px at 30% 15%, rgba(255, 180, 220, 0.18), rgba(0,0,0,0) 70%),
+    linear-gradient(150deg, #2c2542 0%, #4b3a63 55%, #3a3352 100%);
+  box-shadow: 0 18px 40px rgba(120, 70, 130, 0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+/* 假窗口三个小圆点，像个桌面 */
+.stage::before {
+  content: "";
+  position: absolute;
+  top: 12px; left: 14px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #ff6159;
+  box-shadow: 16px 0 0 #ffbd2e, 32px 0 0 #29c940;
+  opacity: 0.9;
+  z-index: 5;
+}
+.hero-caption { margin-top: 20px; }
+#state-name {
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--pink);
+  background: #fff;
+  padding: 6px 16px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(255, 150, 190, 0.3);
+  min-width: 120px;
+  transition: transform 0.15s;
+}
+.hint { margin-top: 12px; font-size: 13px; color: #b088a4; }
+
+/* ══════ 宠物本体（与桌面版一致）══════ */
+#pet {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+#bubble {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 14px 7px;
+  background: linear-gradient(150deg, #fff6fb 0%, #ffe3f1 55%, #ffd6ef 100%);
+  border: 2px solid #ffffff;
+  border-radius: 16px;
+  box-shadow:
+    0 0 15px rgba(255, 160, 205, 0.75),
+    0 4px 12px rgba(180, 90, 140, 0.25),
+    inset 0 1px 3px rgba(255, 255, 255, 0.9);
+  animation: sway 3s ease-in-out infinite, glow 3s ease-in-out infinite;
+  z-index: 2;
+}
+#bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -8px; left: 50%;
+  transform: translateX(-50%);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid #ffd6ef;
+  filter: drop-shadow(0 2px 1px rgba(255, 150, 190, 0.3));
+}
+#bubble-top { display: flex; align-items: center; gap: 5px; line-height: 1; }
+#bubble-label {
+  font-size: 12.5px; font-weight: 700; color: var(--pink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7); letter-spacing: 0.3px;
+}
+#emoji { font-size: 15px; animation: floaty 2s ease-in-out infinite; }
+#bubble-detail {
+  font-size: 10px; color: #b06a95; margin-top: 1px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;
+}
+#bubble-detail:empty { display: none; }
+
+#creature {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  width: 108px; height: 58px;
+  animation: bob 2.6s ease-in-out infinite;
+  cursor: pointer;
+}
+#halo {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(closest-side,
+    rgba(255, 251, 253, 0.95) 0%,
+    rgba(255, 228, 244, 0.7) 62%,
+    rgba(255, 210, 236, 0) 100%);
+  filter: blur(0.4px);
+  animation: glowSoft 3s ease-in-out infinite;
+}
+#face {
+  position: relative; z-index: 1;
+  font-size: 22px; font-weight: 800; color: #6b4a7a;
+  font-family: "Menlo", "PingFang SC", monospace;
+  letter-spacing: -1px; white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95);
+  transition: color 0.3s;
+}
+.cheek {
+  position: absolute; z-index: 1;
+  width: 13px; height: 8px; border-radius: 50%;
+  background: rgba(255, 140, 180, 0.55); filter: blur(1.5px); bottom: 16px;
+}
+.cheek-l { left: calc(50% - 32px); }
+.cheek-r { right: calc(50% - 32px); }
+
+.heart {
+  position: absolute; z-index: 2; pointer-events: none;
+  transform: translateX(-50%); opacity: 0;
+  animation-name: heartFloat; animation-timing-function: ease-out;
+  animation-fill-mode: forwards; will-change: transform, opacity;
+  filter: drop-shadow(0 1px 2px rgba(255, 120, 170, 0.4));
+}
+@keyframes heartFloat {
+  0%   { opacity: 0; transform: translate(-50%, 0)     scale(0.4) rotate(0deg); }
+  20%  { opacity: 1; transform: translate(-50%, -10px) scale(1)   rotate(-8deg); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--drift, 0px)), -46px) scale(0.9) rotate(10deg); }
+}
+
+@keyframes bob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
+@keyframes sway { 0%,100%{transform:translateY(0) rotate(-1.5deg);} 50%{transform:translateY(-3px) rotate(1.5deg);} }
+@keyframes glow {
+  0%,100% { box-shadow: 0 0 15px rgba(255,160,205,0.75), 0 4px 12px rgba(180,90,140,0.25), inset 0 1px 3px rgba(255,255,255,0.9); }
+  50%     { box-shadow: 0 0 22px rgba(255,140,195,0.95), 0 4px 12px rgba(180,90,140,0.25), inset 0 1px 3px rgba(255,255,255,0.9); }
+}
+@keyframes glowSoft { 0%,100%{opacity:.9;transform:scale(1);} 50%{opacity:1;transform:scale(1.05);} }
+@keyframes floaty { 0%,100%{transform:translateY(0) rotate(0);} 50%{transform:translateY(-2px) rotate(8deg);} }
+
+#creature.busy { animation: bounce 0.6s ease-in-out infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0) scaleY(1);} 30%{transform:translateY(-9px) scaleY(1.06);} 55%{transform:translateY(0) scaleY(0.94);} }
+#creature.sleep { animation: sleepBreath 4s ease-in-out infinite; }
+@keyframes sleepBreath { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-2px) scale(1.02);} }
+#creature.poked { animation: poked 0.55s ease; }
+@keyframes poked {
+  0%{transform:scale(1) rotate(0);} 25%{transform:scale(1.18,0.85) rotate(-6deg);}
+  50%{transform:scale(0.9,1.12) rotate(5deg);} 75%{transform:scale(1.08,0.95) rotate(-3deg);}
+  100%{transform:scale(1) rotate(0);}
+}
+#creature.celebrate { animation: celebrate 0.7s ease; }
+@keyframes celebrate {
+  0%{transform:translateY(0) rotate(0) scale(1);} 30%{transform:translateY(-12px) rotate(-8deg) scale(1.12);}
+  60%{transform:translateY(-12px) rotate(8deg) scale(1.12);} 100%{transform:translateY(0) rotate(0) scale(1);}
+}
+
+/* ══════ 状态画廊 ══════ */
+.gallery { margin: 54px auto 10px; max-width: 820px; padding: 0 18px; }
+.gallery h2, .install h2 {
+  font-size: 20px; color: var(--pink); margin-bottom: 22px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px 10px 12px;
+  box-shadow: 0 6px 16px rgba(255, 160, 200, 0.22);
+  border: 1.5px solid #ffe6f2;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(255, 140, 190, 0.32); }
+.card .cface {
+  font-family: "Menlo", monospace; font-size: 18px; font-weight: 800;
+  color: #6b4a7a; white-space: nowrap;
+}
+.card .clabel { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--pink); }
+.card .cemoji { font-size: 15px; }
+
+/* ══════ 安装区 ══════ */
+.install { margin: 54px auto 0; max-width: 640px; padding: 0 18px; }
+.install pre {
+  text-align: left;
+  background: #2c2542;
+  color: #ffd6ef;
+  padding: 18px 20px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.9;
+  overflow-x: auto;
+  box-shadow: 0 10px 26px rgba(80, 50, 90, 0.3);
+}
+.install pre .c { color: #b0a0c8; }
+.btn {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 12px 28px;
+  background: var(--pink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(230, 76, 139, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(230, 76, 139, 0.5); }
+
+footer { margin-top: 50px; font-size: 13px; color: #c090b0; }
+footer a { color: var(--pink); text-decoration: none; }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="pet">
+    <button id="hide" title="躲起来 5 分钟">🙈</button>
+    <button id="close" title="收起宠物">×</button>
+
+    <!-- 头顶带尾巴的小气泡：它在「说」当前状态 -->
+    <div id="bubble">
+      <div id="bubble-top">
+        <span id="bubble-label">摸鱼待命中</span>
+        <span id="emoji">💤</span>
+      </div>
+      <span id="bubble-detail"></span>
+    </div>
+
+    <!-- 宠物本体：柔光圆晕 + 颜文字 + 腮红 -->
+    <div id="creature">
+      <div id="halo"></div>
+      <span class="cheek cheek-l"></span>
+      <span class="cheek cheek-r"></span>
+      <span id="face">(｡･ᴗ･｡)</span>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

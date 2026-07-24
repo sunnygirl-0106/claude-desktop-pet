@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Claude 桌面宠物 ٩(◕‿◕)۶ — 会告诉你 Claude Code 在忙什么的小宠物</title>
+  <meta name="description" content="一只悬浮在桌面上的小宠物，实时显示 Claude Code 正在干嘛。会冒爱心、能戳、摸鱼久了会打呼睡着。" />
+  <link rel="stylesheet" href="pet.css" />
+</head>
+<body>
+  <header>
+    <h1>Claude 桌面宠物</h1>
+    <p class="tagline">一只悬浮在桌面上的小宠物，实时告诉你 Claude Code 正在忙什么 ٩(◕‿◕)۶</p>
+  </header>
+
+  <section class="hero">
+    <div class="stage">
+      <!-- 宠物本体（和桌面版结构一致） -->
+      <div id="pet">
+        <div id="bubble">
+          <div id="bubble-top">
+            <span id="bubble-label">摸鱼待命中</span>
+            <span id="emoji">💤</span>
+          </div>
+          <span id="bubble-detail"></span>
+        </div>
+        <div id="creature">
+          <div id="halo"></div>
+          <span class="cheek cheek-l"></span>
+          <span class="cheek cheek-r"></span>
+          <span id="face">(｡･ᴗ･｡)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-caption">
+      <span id="state-name">摸鱼待命中 💤</span>
+      <p class="hint">👆 点它戳一下 · 状态每隔几秒自动切换给你看</p>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <h2>它会精准告诉你我在忙什么 · 全部 21 种状态</h2>
+    <div class="grid" id="gallery"></div>
+  </section>
+
+  <section class="install">
+    <h2>想装到自己电脑上？(macOS)</h2>
+    <pre><span class="c"># 需要 Node.js</span>
+git clone https://github.com/sunnygirl-0106/claude-desktop-pet.git
+cd claude-desktop-pet
+npm install
+npm start   <span class="c"># 宠物就出现在桌面右下角啦</span></pre>
+    <p style="margin-top:16px;font-size:13px;color:#a06a90;">
+      再按 README 把 hook 接到 <code>~/.claude/settings.json</code>，它就能实时读出 Claude Code 在干嘛 💕
+    </p>
+    <a class="btn" href="https://github.com/sunnygirl-0106/claude-desktop-pet">看 GitHub 仓库 →</a>
+  </section>
+
+  <footer>
+    用 💗 手作 · 由 Claude Code hooks 驱动 ·
+    <a href="https://github.com/sunnygirl-0106/claude-desktop-pet">sunnygirl-0106/claude-desktop-pet</a>
+  </footer>
+
+  <script src="demo.js"></script>
+</body>
+</html>

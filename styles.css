@@ -1,0 +1,265 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  cursor: default;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  font-family: "Yuanti SC", "YuanTi SC", "Chalkboard SE", "PingFang SC",
+    "Hiragino Sans GB", sans-serif;
+}
+
+#pet {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  -webkit-app-region: drag;
+}
+
+/* ── 关闭按钮：hover 才出现 ── */
+#close {
+  position: absolute;
+  top: 4px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 120, 160, 0.85);
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.15s;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+}
+/* 双击宠物后才出现（几秒后自动隐藏） */
+#close.show { opacity: 1; pointer-events: auto; }
+#close:hover { background: #ff5c8a; transform: scale(1.15); }
+
+/* 躲起来 5 分钟按钮：在左上角 */
+#hide {
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 200, 120, 0.9);
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.15s;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+}
+#hide.show { opacity: 1; pointer-events: auto; }
+#hide:hover { background: #ffb84d; transform: scale(1.15); }
+
+/* ══════════════════════════════════════
+   头顶小气泡（带尾巴）：它在说话
+   ══════════════════════════════════════ */
+#bubble {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 14px 7px;
+  background: linear-gradient(150deg, #fff6fb 0%, #ffe3f1 55%, #ffd6ef 100%);
+  border: 2px solid #ffffff;
+  border-radius: 16px;
+  box-shadow:
+    0 0 15px rgba(255, 160, 205, 0.75),
+    0 4px 12px rgba(180, 90, 140, 0.25),
+    inset 0 1px 3px rgba(255, 255, 255, 0.9);
+  animation: sway 3s ease-in-out infinite, glow 3s ease-in-out infinite;
+  z-index: 2;
+}
+/* 尾巴：正中间的小三角，指向下面的宠物 */
+#bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid #ffd6ef;
+  filter: drop-shadow(0 2px 1px rgba(255, 150, 190, 0.3));
+}
+
+#bubble-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1;
+}
+#bubble-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #e64c8b;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.3px;
+}
+#emoji {
+  font-size: 15px;
+  animation: floaty 2s ease-in-out infinite;
+}
+#bubble-detail {
+  font-size: 10px;
+  color: #b06a95;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+#bubble-detail:empty { display: none; }
+
+/* ══════════════════════════════════════
+   宠物本体：柔光圆晕 + 颜文字 + 腮红
+   圆晕既当「身体」，又保证深壁纸上看得清
+   ══════════════════════════════════════ */
+#creature {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 58px;
+  animation: bob 2.6s ease-in-out infinite;
+  /* 可被戳：不参与拖动，鼠标变手型 */
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+}
+#halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side,
+    rgba(255, 251, 253, 0.95) 0%,
+    rgba(255, 228, 244, 0.7) 62%,
+    rgba(255, 210, 236, 0) 100%);
+  filter: blur(0.4px);
+  animation: glowSoft 3s ease-in-out infinite;
+}
+#face {
+  position: relative;
+  z-index: 1;
+  font-size: 22px;
+  font-weight: 800;
+  color: #6b4a7a;
+  font-family: "Menlo", "PingFang SC", monospace; /* 等宽保证颜文字不错位 */
+  letter-spacing: -1px;
+  white-space: nowrap; /* 颜文字永远单行，再宽也不换行 */
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95);
+  transition: color 0.3s;
+}
+/* 腮红：两坨柔粉 */
+.cheek {
+  position: absolute;
+  z-index: 1;
+  width: 13px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 140, 180, 0.55);
+  filter: blur(1.5px);
+  bottom: 16px;
+}
+.cheek-l { left: calc(50% - 32px); }
+.cheek-r { right: calc(50% - 32px); }
+
+/* ── 冒出来的小爱心 ── */
+.heart {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation-name: heartFloat;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 1px 2px rgba(255, 120, 170, 0.4));
+}
+@keyframes heartFloat {
+  0%   { opacity: 0;   transform: translate(-50%, 0)     scale(0.4) rotate(0deg); }
+  20%  { opacity: 1;   transform: translate(-50%, -10px) scale(1)   rotate(-8deg); }
+  100% { opacity: 0;   transform: translate(calc(-50% + var(--drift, 0px)), -46px) scale(0.9) rotate(10deg); }
+}
+
+/* ══════════════════════════════════════ 动画 ══════════════════════════════════════ */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+@keyframes sway {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50%      { transform: translateY(-3px) rotate(1.5deg); }
+}
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 160, 205, 0.75), 0 4px 12px rgba(180, 90, 140, 0.25), inset 0 1px 3px rgba(255, 255, 255, 0.9); }
+  50%      { box-shadow: 0 0 22px rgba(255, 140, 195, 0.95), 0 4px 12px rgba(180, 90, 140, 0.25), inset 0 1px 3px rgba(255, 255, 255, 0.9); }
+}
+@keyframes glowSoft {
+  0%, 100% { opacity: 0.9;  transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.05); }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-2px) rotate(8deg); }
+}
+
+/* ── 忙碌时宠物蹦得更欢 ── */
+#creature.busy { animation: bounce 0.6s ease-in-out infinite; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0)    scaleY(1); }
+  30%      { transform: translateY(-9px) scaleY(1.06); }
+  55%      { transform: translateY(0)    scaleY(0.94); }
+}
+
+/* ── 睡着了：呼吸更慢更浅 ── */
+#creature.sleep { animation: sleepBreath 4s ease-in-out infinite; }
+@keyframes sleepBreath {
+  0%, 100% { transform: translateY(0)    scale(1); }
+  50%      { transform: translateY(-2px) scale(1.02); }
+}
+
+/* ── 被戳一下：Q弹摇晃 ── */
+#creature.poked { animation: poked 0.55s ease; }
+@keyframes poked {
+  0%   { transform: scale(1)            rotate(0); }
+  25%  { transform: scale(1.18, 0.85)   rotate(-6deg); }
+  50%  { transform: scale(0.9, 1.12)    rotate(5deg); }
+  75%  { transform: scale(1.08, 0.95)   rotate(-3deg); }
+  100% { transform: scale(1)            rotate(0); }
+}
+
+/* ── 完成时蹦跳庆祝 ── */
+#creature.celebrate { animation: celebrate 0.7s ease; }
+@keyframes celebrate {
+  0%   { transform: translateY(0)    rotate(0)     scale(1); }
+  30%  { transform: translateY(-12px) rotate(-8deg) scale(1.12); }
+  60%  { transform: translateY(-12px) rotate(8deg)  scale(1.12); }
+  100% { transform: translateY(0)    rotate(0)     scale(1); }
+}
