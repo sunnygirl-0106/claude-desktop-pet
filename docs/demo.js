@@ -24,6 +24,7 @@ const STATES = {
   fetching:   { faces: ['( •ᴗ•)⊃', '( •ᴗ•)?'],       emoji: '📡',  label: '读网页',       cls: '',          color: '#2a7a9a' },
   designing:  { faces: ['(⁎˃ᴗ˂⁎)', '(⁎•ᴗ•⁎)'],      emoji: '🎨',  label: '画设计稿',     cls: 'busy',      color: '#c04a8a' },
   delegating: { faces: ['⊂(◉‿◉)つ', '⊂( ◜◒◝ )つ'],  emoji: '🤖',  label: '派小弟干活',   cls: 'busy',      color: '#8a5a3a' },
+  permission: { faces: ['( ･ᴗ･)ゞ', '( ･ᴗ･)ﾉ'],     emoji: '🙏',  label: '等你点允许',   cls: '',          color: '#c07a2a' },
   waiting:    { faces: ['( ･◡･)？', '( ･o･)？'],     emoji: '❓',  label: '等你回复',     cls: '',          color: '#b03a5a' },
   done:       { faces: ['٩(◕‿◕)۶', 'ヽ(◕‿◕)ﾉ'],     emoji: '✨',  label: '搞定啦！',     cls: 'celebrate', color: '#c02a7a' },
 };
@@ -34,7 +35,7 @@ const TIMELINE = [
   ['editing', 'styles.css'], ['writing', 'App.tsx'], ['running', 'ls'], ['installing', 'npm'],
   ['testing', 'pytest'], ['building', 'vite'], ['committing', 'git commit'], ['gitlook', 'git diff'],
   ['websearch', 'kawaii css'], ['fetching', 'github.com'], ['designing', 'figma'],
-  ['delegating', '审查代码'], ['organizing', ''], ['waiting', ''], ['done', ''], ['idle', ''],
+  ['delegating', '审查代码'], ['organizing', ''], ['permission', ''], ['waiting', ''], ['done', ''], ['idle', ''],
 ];
 
 const faceEl   = document.getElementById('face');

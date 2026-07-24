@@ -93,6 +93,10 @@ const STATES = {
   },
 
   // ── 交互 ──
+  permission: {
+    faces: ['( ･ᴗ･)ゞ', '( ･ᴗ･)ﾉ'],
+    emoji: '🙏', label: '等你点允许', cls: '', color: '#c07a2a',
+  },
   waiting: {
     faces: ['( ･◡･)？', '( ･o･)？'],
     emoji: '❓', label: '等你回复', cls: '', color: '#b03a5a',
@@ -162,7 +166,7 @@ function tick() {
 
   // 安全兜底：完成状态 5 秒后回到待命；忙碌状态 90 秒没更新也回待命
   if (key === 'done' && age > 5000) key = 'idle';
-  else if (key !== 'idle' && key !== 'waiting' && key !== 'done' && age > 90000) key = 'idle';
+  else if (key !== 'idle' && key !== 'waiting' && key !== 'permission' && key !== 'done' && age > 90000) key = 'idle';
 
   // 记录空闲起点：只要不是 idle 就刷新计时
   if (key !== 'idle') idleSince = Date.now();

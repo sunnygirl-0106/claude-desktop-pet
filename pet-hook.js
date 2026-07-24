@@ -81,7 +81,16 @@ function classifyBash(cmd) {
 function mapEvent(ev, data) {
   if (ev === 'prompt') return { state: 'thinking', detail: '' };
   if (ev === 'stop')   return { state: 'done', detail: '' };
-  if (ev === 'notify') return { state: 'waiting', detail: clip(data.message || '') };
+  if (ev === 'notify') {
+    const msg = String(data.message || '');
+    // 权限请求：我在干活，只是卡在等你点「允许」，不是做完了
+    if (/permission|approve|allow|允许|授权/i.test(msg)) {
+      const m = msg.match(/use\s+([A-Za-z_]+)/);
+      return { state: 'permission', detail: m ? clip(m[1]) : '' };
+    }
+    // 真正空闲、在等你输入
+    return { state: 'waiting', detail: '' };
+  }
 
   if (ev === 'post')   return { state: 'thinking', detail: '' };
 
