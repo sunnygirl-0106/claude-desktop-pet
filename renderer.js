@@ -127,7 +127,6 @@ function applyState(key, detail) {
   currentKey = key;
 
   faceEl.textContent = st.faces[0];
-  faceEl.style.color = st.color;
   emojiEl.textContent = st.emoji;
   labelEl.textContent = st.label;
   detailEl.textContent = detail || '';
@@ -222,7 +221,6 @@ const POKE_FACES = ['(๑>ᴗ<๑)', '(≧◡≦)', '(*≧ω≦)', 'ヽ(*・ω�
 function poke() {
   const pick = (a) => a[Math.floor(Math.random() * a.length)];
   faceEl.textContent = pick(POKE_FACES);
-  faceEl.style.color = getComputedStyle(document.body).getPropertyValue('--label').trim() || '#e64c8b';
   emojiEl.textContent = '💗';
   labelEl.textContent = pick(POKE_WORDS);
   detailEl.textContent = '';
