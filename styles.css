@@ -15,6 +15,57 @@ html, body {
     "Hiragino Sans GB", sans-serif;
 }
 
+/* ══════════════════════════════════════
+   马卡龙主题色 —— 默认：马卡龙粉
+   切换只需给 <body> 加 .theme-xxx 类
+   （rgb 分量用逗号串，方便 rgba() 调透明度）
+   ══════════════════════════════════════ */
+:root {
+  --grad1: #fff6fb; --grad2: #ffe3f1; --grad3: #ffd6ef;
+  --tail: #ffd6ef;
+  --label: #e64c8b; --detail: #b06a95;
+  --glow: 255,160,205; --glow2: 255,140,195; --shadow: 180,90,140;
+  --halo1: 255,251,253; --halo2: 255,228,244; --halo3: 255,210,236;
+  --cheek: 255,140,180; --heart: 255,120,170;
+  --accent: 255,120,160; --accent-hover: #ff5c8a;
+}
+body.theme-green {
+  --grad1: #f3fdf8; --grad2: #dcf7e8; --grad3: #c9f0dc;
+  --tail: #c9f0dc;
+  --label: #23a06a; --detail: #6a9a86;
+  --glow: 150,225,190; --glow2: 130,215,180; --shadow: 90,160,130;
+  --halo1: 251,255,253; --halo2: 224,246,235; --halo3: 210,240,225;
+  --cheek: 130,215,175; --heart: 120,200,160;
+  --accent: 110,205,160; --accent-hover: #4cbf90;
+}
+body.theme-blue {
+  --grad1: #f3fafe; --grad2: #dceffb; --grad3: #cbe7fa;
+  --tail: #cbe7fa;
+  --label: #2b82c0; --detail: #6a8aa8;
+  --glow: 150,200,240; --glow2: 130,190,238; --shadow: 90,130,170;
+  --halo1: 251,253,255; --halo2: 224,238,248; --halo3: 210,230,246;
+  --cheek: 140,190,235; --heart: 120,180,225;
+  --accent: 110,175,225; --accent-hover: #4c9fe0;
+}
+body.theme-purple {
+  --grad1: #faf6fe; --grad2: #ece0fb; --grad3: #e2d2fa;
+  --tail: #e2d2fa;
+  --label: #8a52c0; --detail: #8a7aa8;
+  --glow: 195,165,240; --glow2: 185,145,238; --shadow: 130,90,170;
+  --halo1: 253,251,255; --halo2: 240,230,248; --halo3: 232,220,246;
+  --cheek: 190,150,235; --heart: 175,130,225;
+  --accent: 170,120,225; --accent-hover: #9a5ce0;
+}
+body.theme-yellow {
+  --grad1: #fffdf2; --grad2: #fdf3cf; --grad3: #fbecc0;
+  --tail: #fbecc0;
+  --label: #c79a1a; --detail: #a8945a;
+  --glow: 245,215,120; --glow2: 240,205,100; --shadow: 170,140,50;
+  --halo1: 255,254,250; --halo2: 250,244,224; --halo3: 250,238,210;
+  --cheek: 240,200,110; --heart: 225,190,90;
+  --accent: 235,200,90; --accent-hover: #e0b84d;
+}
+
 #pet {
   position: relative;
   width: 100%;
@@ -27,44 +78,17 @@ html, body {
   -webkit-app-region: drag;
 }
 
-/* ── 关闭按钮：hover 才出现 ── */
-#close {
+/* ── 顶部小按钮（双击宠物才出现）── */
+.ctrl-btn {
   position: absolute;
   top: 4px;
-  right: 12px;
-  width: 20px;
-  height: 20px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 120, 160, 0.85);
-  color: #fff;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s, transform 0.15s;
-  -webkit-app-region: no-drag;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  z-index: 3;
-}
-/* 双击宠物后才出现（几秒后自动隐藏） */
-#close.show { opacity: 1; pointer-events: auto; }
-#close:hover { background: #ff5c8a; transform: scale(1.15); }
-
-/* 躲起来 5 分钟按钮：在左上角 */
-#hide {
-  position: absolute;
-  top: 4px;
-  left: 12px;
   width: 22px;
   height: 22px;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 200, 120, 0.9);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
+  color: #fff;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s, transform 0.15s;
@@ -73,8 +97,15 @@ html, body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 3;
 }
-#hide.show { opacity: 1; pointer-events: auto; }
-#hide:hover { background: #ffb84d; transform: scale(1.15); }
+.ctrl-btn.show { opacity: 1; pointer-events: auto; }
+.ctrl-btn:hover { transform: scale(1.15); }
+
+#close { right: 12px; background: rgba(var(--accent), 0.9); font-size: 14px; font-weight: bold; }
+#close:hover { background: var(--accent-hover); }
+#hide  { left: 12px; background: rgba(255, 200, 120, 0.9); }
+#hide:hover  { background: #ffb84d; }
+#theme { left: 40px; background: rgba(var(--accent), 0.75); }
+#theme:hover { background: rgba(var(--accent), 1); }
 
 /* ══════════════════════════════════════
    头顶小气泡（带尾巴）：它在说话
@@ -85,12 +116,12 @@ html, body {
   flex-direction: column;
   align-items: center;
   padding: 6px 14px 7px;
-  background: linear-gradient(150deg, #fff6fb 0%, #ffe3f1 55%, #ffd6ef 100%);
+  background: linear-gradient(150deg, var(--grad1) 0%, var(--grad2) 55%, var(--grad3) 100%);
   border: 2px solid #ffffff;
   border-radius: 16px;
   box-shadow:
-    0 0 15px rgba(255, 160, 205, 0.75),
-    0 4px 12px rgba(180, 90, 140, 0.25),
+    0 0 15px rgba(var(--glow), 0.75),
+    0 4px 12px rgba(var(--shadow), 0.25),
     inset 0 1px 3px rgba(255, 255, 255, 0.9);
   animation: sway 3s ease-in-out infinite, glow 3s ease-in-out infinite;
   z-index: 2;
@@ -104,8 +135,9 @@ html, body {
   transform: translateX(-50%);
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-top: 9px solid #ffd6ef;
-  filter: drop-shadow(0 2px 1px rgba(255, 150, 190, 0.3));
+  border-top: 9px solid var(--tail);
+  filter: drop-shadow(0 2px 1px rgba(var(--glow2), 0.5));
+  transition: border-top-color 0.6s ease;
 }
 
 #bubble-top {
@@ -117,9 +149,10 @@ html, body {
 #bubble-label {
   font-size: 12.5px;
   font-weight: 700;
-  color: #e64c8b;
+  color: var(--label);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   letter-spacing: 0.3px;
+  transition: color 0.6s ease;
 }
 #emoji {
   font-size: 15px;
@@ -127,7 +160,7 @@ html, body {
 }
 #bubble-detail {
   font-size: 10px;
-  color: #b06a95;
+  color: var(--detail);
   margin-top: 1px;
   white-space: nowrap;
   overflow: hidden;
@@ -138,7 +171,6 @@ html, body {
 
 /* ══════════════════════════════════════
    宠物本体：柔光圆晕 + 颜文字 + 腮红
-   圆晕既当「身体」，又保证深壁纸上看得清
    ══════════════════════════════════════ */
 #creature {
   position: relative;
@@ -148,7 +180,6 @@ html, body {
   width: 108px;
   height: 58px;
   animation: bob 2.6s ease-in-out infinite;
-  /* 可被戳：不参与拖动，鼠标变手型 */
   -webkit-app-region: no-drag;
   cursor: pointer;
 }
@@ -157,9 +188,9 @@ html, body {
   inset: 0;
   border-radius: 50%;
   background: radial-gradient(closest-side,
-    rgba(255, 251, 253, 0.95) 0%,
-    rgba(255, 228, 244, 0.7) 62%,
-    rgba(255, 210, 236, 0) 100%);
+    rgba(var(--halo1), 0.95) 0%,
+    rgba(var(--halo2), 0.7) 62%,
+    rgba(var(--halo3), 0) 100%);
   filter: blur(0.4px);
   animation: glowSoft 3s ease-in-out infinite;
 }
@@ -171,20 +202,21 @@ html, body {
   color: #6b4a7a;
   font-family: "Menlo", "PingFang SC", monospace; /* 等宽保证颜文字不错位 */
   letter-spacing: -1px;
-  white-space: nowrap; /* 颜文字永远单行，再宽也不换行 */
+  white-space: nowrap; /* 颜文字永远单行 */
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95);
   transition: color 0.3s;
 }
-/* 腮红：两坨柔粉 */
+/* 腮红：两坨柔色 */
 .cheek {
   position: absolute;
   z-index: 1;
   width: 13px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 140, 180, 0.55);
+  background: rgba(var(--cheek), 0.55);
   filter: blur(1.5px);
   bottom: 16px;
+  transition: background 0.6s ease;
 }
 .cheek-l { left: calc(50% - 32px); }
 .cheek-r { right: calc(50% - 32px); }
@@ -200,7 +232,7 @@ html, body {
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
   will-change: transform, opacity;
-  filter: drop-shadow(0 1px 2px rgba(255, 120, 170, 0.4));
+  filter: drop-shadow(0 1px 2px rgba(var(--heart), 0.4));
 }
 @keyframes heartFloat {
   0%   { opacity: 0;   transform: translate(-50%, 0)     scale(0.4) rotate(0deg); }
@@ -218,8 +250,8 @@ html, body {
   50%      { transform: translateY(-3px) rotate(1.5deg); }
 }
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 15px rgba(255, 160, 205, 0.75), 0 4px 12px rgba(180, 90, 140, 0.25), inset 0 1px 3px rgba(255, 255, 255, 0.9); }
-  50%      { box-shadow: 0 0 22px rgba(255, 140, 195, 0.95), 0 4px 12px rgba(180, 90, 140, 0.25), inset 0 1px 3px rgba(255, 255, 255, 0.9); }
+  0%, 100% { box-shadow: 0 0 15px rgba(var(--glow), 0.75), 0 4px 12px rgba(var(--shadow), 0.25), inset 0 1px 3px rgba(255, 255, 255, 0.9); }
+  50%      { box-shadow: 0 0 22px rgba(var(--glow2), 0.95), 0 4px 12px rgba(var(--shadow), 0.25), inset 0 1px 3px rgba(255, 255, 255, 0.9); }
 }
 @keyframes glowSoft {
   0%, 100% { opacity: 0.9;  transform: scale(1); }

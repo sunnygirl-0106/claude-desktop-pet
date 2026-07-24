@@ -135,7 +135,47 @@ Object.keys(STATES).forEach((k) => {
   gallery.appendChild(card);
 });
 
+// ══════════════════════════════════════
+// 马卡龙换色 🎨：色卡可点 + 自己随机变
+// ══════════════════════════════════════
+const THEMES = ['', 'theme-green', 'theme-blue', 'theme-purple', 'theme-yellow'];
+const THEME_NAMES = ['马卡龙粉', '马卡龙绿', '马卡龙蓝', '芋泥紫', '柠檬黄'];
+const SWATCH_COLORS = ['#ffd0e6', '#c9f0dc', '#cbe7fa', '#e2d2fa', '#fbecc0'];
+
+let themeIndex = 0;
+const swatchWrap = document.getElementById('swatches');
+const swatches = THEMES.map((_, i) => {
+  const s = document.createElement('span');
+  s.className = 'swatch';
+  s.style.background = SWATCH_COLORS[i];
+  s.title = THEME_NAMES[i];
+  s.addEventListener('click', () => setTheme(i, true));
+  swatchWrap.appendChild(s);
+  return s;
+});
+
+function setTheme(i, fromClick) {
+  themeIndex = i;
+  petEl.className = THEMES[i]; // 主题类只作用在宠物上
+  swatches.forEach((s, j) => s.classList.toggle('active', j === i));
+  if (fromClick) burstHearts(3);
+}
+
+// 自己随机换色：每隔 6~12 秒（演示页节奏比桌面版快一点，方便访客看到）
+function randomThemeShuffle() {
+  const delay = 6000 + Math.random() * 6000;
+  setTimeout(() => {
+    let next = Math.floor(Math.random() * THEMES.length);
+    if (next === themeIndex) next = (next + 1) % THEMES.length;
+    setTheme(next, false);
+    burstHearts(3);
+    randomThemeShuffle();
+  }, delay);
+}
+
 // 启动
+setTheme(0, false);
 applyState('thinking', '');
 ti = 1;
 scheduleHeart();
+randomThemeShuffle();

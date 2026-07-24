@@ -1,13 +1,12 @@
 /* ══════════════════════════════════════════════════════
    Claude 桌面宠物 · 网页演示样式
-   宠物视觉部分与桌面版一致，另加落地页/画廊样式
+   宠物视觉与桌面版一致，另加落地页/画廊/色卡样式
    ══════════════════════════════════════════════════════ */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
   --pink: #e64c8b;
-  --pink-soft: #ffd6ef;
   --ink: #4a3a52;
 }
 
@@ -32,11 +31,7 @@ header h1 {
   letter-spacing: 1px;
   text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
 }
-.tagline {
-  margin-top: 10px;
-  font-size: 15px;
-  color: #a06a90;
-}
+.tagline { margin-top: 10px; font-size: 15px; color: #a06a90; }
 
 /* ── Hero：深色「桌面」，秀发光 ── */
 .hero { margin: 26px auto 8px; }
@@ -52,7 +47,6 @@ header h1 {
   box-shadow: 0 18px 40px rgba(120, 70, 130, 0.35), inset 0 1px 0 rgba(255,255,255,0.08);
   overflow: hidden;
 }
-/* 假窗口三个小圆点，像个桌面 */
 .stage::before {
   content: "";
   position: absolute;
@@ -79,7 +73,30 @@ header h1 {
 }
 .hint { margin-top: 12px; font-size: 13px; color: #b088a4; }
 
-/* ══════ 宠物本体（与桌面版一致）══════ */
+/* ── 色卡 ── */
+#swatches {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.swatch:hover { transform: scale(1.2); }
+.swatch.active { outline: 2px solid #e64c8b; outline-offset: 2px; }
+
+/* ══════════════════════════════════════
+   宠物本体 —— 马卡龙主题变量（默认粉）
+   主题类加在 #pet 上，只影响宠物、不影响页面
+   ══════════════════════════════════════ */
 #pet {
   position: absolute;
   inset: 0;
@@ -88,6 +105,39 @@ header h1 {
   align-items: center;
   justify-content: center;
   gap: 4px;
+  --grad1: #fff6fb; --grad2: #ffe3f1; --grad3: #ffd6ef; --tail: #ffd6ef;
+  --label: #e64c8b; --detail: #b06a95;
+  --glow: 255,160,205; --glow2: 255,140,195; --shadow: 180,90,140;
+  --halo1: 255,251,253; --halo2: 255,228,244; --halo3: 255,210,236;
+  --cheek: 255,140,180; --heart: 255,120,170;
+}
+#pet.theme-green {
+  --grad1: #f3fdf8; --grad2: #dcf7e8; --grad3: #c9f0dc; --tail: #c9f0dc;
+  --label: #23a06a; --detail: #6a9a86;
+  --glow: 150,225,190; --glow2: 130,215,180; --shadow: 90,160,130;
+  --halo1: 251,255,253; --halo2: 224,246,235; --halo3: 210,240,225;
+  --cheek: 130,215,175; --heart: 120,200,160;
+}
+#pet.theme-blue {
+  --grad1: #f3fafe; --grad2: #dceffb; --grad3: #cbe7fa; --tail: #cbe7fa;
+  --label: #2b82c0; --detail: #6a8aa8;
+  --glow: 150,200,240; --glow2: 130,190,238; --shadow: 90,130,170;
+  --halo1: 251,253,255; --halo2: 224,238,248; --halo3: 210,230,246;
+  --cheek: 140,190,235; --heart: 120,180,225;
+}
+#pet.theme-purple {
+  --grad1: #faf6fe; --grad2: #ece0fb; --grad3: #e2d2fa; --tail: #e2d2fa;
+  --label: #8a52c0; --detail: #8a7aa8;
+  --glow: 195,165,240; --glow2: 185,145,238; --shadow: 130,90,170;
+  --halo1: 253,251,255; --halo2: 240,230,248; --halo3: 232,220,246;
+  --cheek: 190,150,235; --heart: 175,130,225;
+}
+#pet.theme-yellow {
+  --grad1: #fffdf2; --grad2: #fdf3cf; --grad3: #fbecc0; --tail: #fbecc0;
+  --label: #c79a1a; --detail: #a8945a;
+  --glow: 245,215,120; --glow2: 240,205,100; --shadow: 170,140,50;
+  --halo1: 255,254,250; --halo2: 250,244,224; --halo3: 250,238,210;
+  --cheek: 240,200,110; --heart: 225,190,90;
 }
 
 #bubble {
@@ -96,12 +146,12 @@ header h1 {
   flex-direction: column;
   align-items: center;
   padding: 6px 14px 7px;
-  background: linear-gradient(150deg, #fff6fb 0%, #ffe3f1 55%, #ffd6ef 100%);
+  background: linear-gradient(150deg, var(--grad1) 0%, var(--grad2) 55%, var(--grad3) 100%);
   border: 2px solid #ffffff;
   border-radius: 16px;
   box-shadow:
-    0 0 15px rgba(255, 160, 205, 0.75),
-    0 4px 12px rgba(180, 90, 140, 0.25),
+    0 0 15px rgba(var(--glow), 0.75),
+    0 4px 12px rgba(var(--shadow), 0.25),
     inset 0 1px 3px rgba(255, 255, 255, 0.9);
   animation: sway 3s ease-in-out infinite, glow 3s ease-in-out infinite;
   z-index: 2;
@@ -113,18 +163,21 @@ header h1 {
   transform: translateX(-50%);
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-top: 9px solid #ffd6ef;
-  filter: drop-shadow(0 2px 1px rgba(255, 150, 190, 0.3));
+  border-top: 9px solid var(--tail);
+  filter: drop-shadow(0 2px 1px rgba(var(--glow2), 0.5));
+  transition: border-top-color 0.6s ease;
 }
 #bubble-top { display: flex; align-items: center; gap: 5px; line-height: 1; }
 #bubble-label {
-  font-size: 12.5px; font-weight: 700; color: var(--pink);
+  font-size: 12.5px; font-weight: 700; color: var(--label);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7); letter-spacing: 0.3px;
+  transition: color 0.6s ease;
 }
 #emoji { font-size: 15px; animation: floaty 2s ease-in-out infinite; }
 #bubble-detail {
-  font-size: 10px; color: #b06a95; margin-top: 1px;
+  font-size: 10px; color: var(--detail); margin-top: 1px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;
+  transition: color 0.6s ease;
 }
 #bubble-detail:empty { display: none; }
 
@@ -138,9 +191,9 @@ header h1 {
 #halo {
   position: absolute; inset: 0; border-radius: 50%;
   background: radial-gradient(closest-side,
-    rgba(255, 251, 253, 0.95) 0%,
-    rgba(255, 228, 244, 0.7) 62%,
-    rgba(255, 210, 236, 0) 100%);
+    rgba(var(--halo1), 0.95) 0%,
+    rgba(var(--halo2), 0.7) 62%,
+    rgba(var(--halo3), 0) 100%);
   filter: blur(0.4px);
   animation: glowSoft 3s ease-in-out infinite;
 }
@@ -155,7 +208,8 @@ header h1 {
 .cheek {
   position: absolute; z-index: 1;
   width: 13px; height: 8px; border-radius: 50%;
-  background: rgba(255, 140, 180, 0.55); filter: blur(1.5px); bottom: 16px;
+  background: rgba(var(--cheek), 0.55); filter: blur(1.5px); bottom: 16px;
+  transition: background 0.6s ease;
 }
 .cheek-l { left: calc(50% - 32px); }
 .cheek-r { right: calc(50% - 32px); }
@@ -165,7 +219,7 @@ header h1 {
   transform: translateX(-50%); opacity: 0;
   animation-name: heartFloat; animation-timing-function: ease-out;
   animation-fill-mode: forwards; will-change: transform, opacity;
-  filter: drop-shadow(0 1px 2px rgba(255, 120, 170, 0.4));
+  filter: drop-shadow(0 1px 2px rgba(var(--heart), 0.4));
 }
 @keyframes heartFloat {
   0%   { opacity: 0; transform: translate(-50%, 0)     scale(0.4) rotate(0deg); }
@@ -176,8 +230,8 @@ header h1 {
 @keyframes bob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
 @keyframes sway { 0%,100%{transform:translateY(0) rotate(-1.5deg);} 50%{transform:translateY(-3px) rotate(1.5deg);} }
 @keyframes glow {
-  0%,100% { box-shadow: 0 0 15px rgba(255,160,205,0.75), 0 4px 12px rgba(180,90,140,0.25), inset 0 1px 3px rgba(255,255,255,0.9); }
-  50%     { box-shadow: 0 0 22px rgba(255,140,195,0.95), 0 4px 12px rgba(180,90,140,0.25), inset 0 1px 3px rgba(255,255,255,0.9); }
+  0%,100% { box-shadow: 0 0 15px rgba(var(--glow), 0.75), 0 4px 12px rgba(var(--shadow), 0.25), inset 0 1px 3px rgba(255,255,255,0.9); }
+  50%     { box-shadow: 0 0 22px rgba(var(--glow2), 0.95), 0 4px 12px rgba(var(--shadow), 0.25), inset 0 1px 3px rgba(255,255,255,0.9); }
 }
 @keyframes glowSoft { 0%,100%{opacity:.9;transform:scale(1);} 50%{opacity:1;transform:scale(1.05);} }
 @keyframes floaty { 0%,100%{transform:translateY(0) rotate(0);} 50%{transform:translateY(-2px) rotate(8deg);} }
@@ -200,54 +254,30 @@ header h1 {
 
 /* ══════ 状态画廊 ══════ */
 .gallery { margin: 54px auto 10px; max-width: 820px; padding: 0 18px; }
-.gallery h2, .install h2 {
-  font-size: 20px; color: var(--pink); margin-bottom: 22px;
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 14px;
-}
+.gallery h2, .install h2 { font-size: 20px; color: var(--pink); margin-bottom: 22px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
 .card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 16px 10px 12px;
-  box-shadow: 0 6px 16px rgba(255, 160, 200, 0.22);
-  border: 1.5px solid #ffe6f2;
+  background: #fff; border-radius: 16px; padding: 16px 10px 12px;
+  box-shadow: 0 6px 16px rgba(255, 160, 200, 0.22); border: 1.5px solid #ffe6f2;
   transition: transform 0.15s, box-shadow 0.15s;
 }
 .card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(255, 140, 190, 0.32); }
-.card .cface {
-  font-family: "Menlo", monospace; font-size: 18px; font-weight: 800;
-  color: #6b4a7a; white-space: nowrap;
-}
+.card .cface { font-family: "Menlo", monospace; font-size: 18px; font-weight: 800; color: #6b4a7a; white-space: nowrap; }
 .card .clabel { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--pink); }
 .card .cemoji { font-size: 15px; }
 
 /* ══════ 安装区 ══════ */
 .install { margin: 54px auto 0; max-width: 640px; padding: 0 18px; }
 .install pre {
-  text-align: left;
-  background: #2c2542;
-  color: #ffd6ef;
-  padding: 18px 20px;
-  border-radius: 14px;
-  font-size: 13px;
-  line-height: 1.9;
-  overflow-x: auto;
-  box-shadow: 0 10px 26px rgba(80, 50, 90, 0.3);
+  text-align: left; background: #2c2542; color: #ffd6ef;
+  padding: 18px 20px; border-radius: 14px; font-size: 13px; line-height: 1.9;
+  overflow-x: auto; box-shadow: 0 10px 26px rgba(80, 50, 90, 0.3);
 }
 .install pre .c { color: #b0a0c8; }
 .btn {
-  display: inline-block;
-  margin-top: 22px;
-  padding: 12px 28px;
-  background: var(--pink);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
-  border-radius: 999px;
-  text-decoration: none;
+  display: inline-block; margin-top: 22px; padding: 12px 28px;
+  background: var(--pink); color: #fff; font-size: 15px; font-weight: 700;
+  border-radius: 999px; text-decoration: none;
   box-shadow: 0 8px 20px rgba(230, 76, 139, 0.4);
   transition: transform 0.15s, box-shadow 0.15s;
 }

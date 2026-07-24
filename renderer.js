@@ -222,7 +222,7 @@ const POKE_FACES = ['(๑>ᴗ<๑)', '(≧◡≦)', '(*≧ω≦)', 'ヽ(*・ω�
 function poke() {
   const pick = (a) => a[Math.floor(Math.random() * a.length)];
   faceEl.textContent = pick(POKE_FACES);
-  faceEl.style.color = '#e64c8b';
+  faceEl.style.color = getComputedStyle(document.body).getPropertyValue('--label').trim() || '#e64c8b';
   emojiEl.textContent = '💗';
   labelEl.textContent = pick(POKE_WORDS);
   detailEl.textContent = '';
@@ -241,21 +241,57 @@ creatureEl.addEventListener('click', (e) => {
   poke();
 });
 
-// 双击 = 露出「躲起来 / 关闭」两个按钮，3.5 秒后自动藏回去
+// 双击 = 露出控制按钮（躲起来 🙈 / 换色 🎨 / 关闭 ×），3.5 秒后自动藏回
 const { ipcRenderer } = require('electron');
 const closeBtn = document.getElementById('close');
 const hideBtn = document.getElementById('hide');
+const themeBtn = document.getElementById('theme');
+const ctrlBtns = [closeBtn, hideBtn, themeBtn];
 let hideCtrlTimer = null;
 function revealControls() {
-  closeBtn.classList.add('show');
-  hideBtn.classList.add('show');
+  ctrlBtns.forEach((b) => b.classList.add('show'));
   clearTimeout(hideCtrlTimer);
-  hideCtrlTimer = setTimeout(() => {
-    closeBtn.classList.remove('show');
-    hideBtn.classList.remove('show');
-  }, 3500);
+  hideCtrlTimer = setTimeout(() => ctrlBtns.forEach((b) => b.classList.remove('show')), 3500);
 }
 creatureEl.addEventListener('dblclick', revealControls);
+
+// ══════════════════════════════════════
+// 马卡龙换色 🎨（记住选择）
+// ══════════════════════════════════════
+const THEMES = ['', 'theme-green', 'theme-blue', 'theme-purple', 'theme-yellow']; // '' = 默认粉
+const THEME_NAMES = ['马卡龙粉', '马卡龙绿', '马卡龙蓝', '芋泥紫', '柠檬黄'];
+function applyTheme(i) {
+  document.body.className = THEMES[i];
+  localStorage.setItem('petThemeIndex', String(i));
+}
+let themeIndex = parseInt(localStorage.getItem('petThemeIndex') || '0', 10);
+if (isNaN(themeIndex) || themeIndex < 0 || themeIndex >= THEMES.length) themeIndex = 0;
+applyTheme(themeIndex);
+
+themeBtn.addEventListener('click', () => {
+  themeIndex = (themeIndex + 1) % THEMES.length;
+  applyTheme(themeIndex);
+  labelEl.textContent = THEME_NAMES[themeIndex]; // 气泡里瞄一眼当前色名
+  detailEl.textContent = '';
+  burstHearts(4);
+  pokeUntil = Date.now() + 1200;
+  lastRendered = '__theme__';
+  revealControls(); // 保持按钮可见，方便连点换色
+});
+
+// ── 自己随机换色：每隔 30~75 秒悄悄换个马卡龙色 ──
+function randomThemeShuffle() {
+  const delay = 30000 + Math.random() * 45000;
+  setTimeout(() => {
+    let next = Math.floor(Math.random() * THEMES.length);
+    if (next === themeIndex) next = (next + 1) % THEMES.length; // 保证跟当前不同
+    themeIndex = next;
+    applyTheme(themeIndex);
+    burstHearts(3);          // 悄悄冒几颗作提示，不打扰状态气泡
+    randomThemeShuffle();
+  }, delay);
+}
+randomThemeShuffle();
 
 setInterval(tick, 400);
 tick();
