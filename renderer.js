@@ -164,8 +164,16 @@ function tick() {
   let detail = s.detail || '';
   const age = Date.now() - (s.ts || 0);
 
-  // 安全兜底：完成状态 5 秒后回到待命；忙碌状态 90 秒没更新也回待命
+  // 安全兜底：
+  //  · 完成状态 5 秒后回到待命
+  //  · 「等你点允许 / 等你回复」这类等真人的状态，本来可以持续很久（你可能只是
+  //    走开一会儿），所以不吃 90 秒的忙碌超时。但如果 Claude Code 窗口已经关了，
+  //    就再没有事件来清除它 —— 于是超过 5 分钟没动静，就当作「你离开了」，
+  //    让宠物自己回去待命 → 再过一会儿打呼睡着，而不是傻等到天荒地老。
+  //  · 其它忙碌状态 90 秒没更新也回待命
+  const INTERACTIVE_TIMEOUT = 5 * 60 * 1000; // 等真人的状态：5 分钟没动静就去休息
   if (key === 'done' && age > 5000) key = 'idle';
+  else if ((key === 'permission' || key === 'waiting') && age > INTERACTIVE_TIMEOUT) key = 'idle';
   else if (key !== 'idle' && key !== 'waiting' && key !== 'permission' && key !== 'done' && age > 90000) key = 'idle';
 
   // 记录空闲起点：只要不是 idle 就刷新计时
