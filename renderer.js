@@ -1,8 +1,8 @@
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-
-const STATUS_FILE = path.join(os.homedir(), '.claude', 'pet-status.json');
+const {
+  formatDisplayDetail,
+  readCurrentDisplay,
+} = require('./src/core/pet-state-service');
+const { ipcRenderer } = require('electron');
 
 // 每种状态：颜文字帧（轮播做眨眼/呼吸感）、emoji、气泡文字、身体样式
 const STATES = {
@@ -101,6 +101,10 @@ const STATES = {
     faces: ['( ･◡･)？', '( ･o･)？'],
     emoji: '❓', label: '等你回复', cls: '', color: '#b03a5a',
   },
+  failed: {
+    faces: ['(｡•́︿•̀｡)', '( ˘•ω•˘ )'],
+    emoji: '⚠️', label: '遇到问题了', cls: '', color: '#b03a5a',
+  },
   done: {
     faces: ['٩(◕‿◕)۶', 'ヽ(◕‿◕)ﾉ'],
     emoji: '✨', label: '搞定啦！', cls: 'celebrate', color: '#c02a7a',
@@ -147,34 +151,12 @@ function applyState(key, detail) {
   if (key === 'done') burstHearts(6);
 }
 
-function readStatus() {
-  try {
-    const raw = fs.readFileSync(STATUS_FILE, 'utf8');
-    return JSON.parse(raw);
-  } catch {
-    return { state: 'idle', detail: '', ts: 0 };
-  }
-}
-
 let lastRendered = '';
 function tick() {
   if (Date.now() < pokeUntil) return; // 被戳反应期间不打扰
-  const s = readStatus();
-  let key = s.state || 'idle';
-  let detail = s.detail || '';
-  const age = Date.now() - (s.ts || 0);
-
-  // 安全兜底：
-  //  · 完成状态 5 秒后回到待命
-  //  · 「等你点允许 / 等你回复」这类等真人的状态，本来可以持续很久（你可能只是
-  //    走开一会儿），所以不吃 90 秒的忙碌超时。但如果 Claude Code 窗口已经关了，
-  //    就再没有事件来清除它 —— 于是超过 5 分钟没动静，就当作「你离开了」，
-  //    让宠物自己回去待命 → 再过一会儿打呼睡着，而不是傻等到天荒地老。
-  //  · 其它忙碌状态 90 秒没更新也回待命
-  const INTERACTIVE_TIMEOUT = 5 * 60 * 1000; // 等真人的状态：5 分钟没动静就去休息
-  if (key === 'done' && age > 5000) key = 'idle';
-  else if ((key === 'permission' || key === 'waiting') && age > INTERACTIVE_TIMEOUT) key = 'idle';
-  else if (key !== 'idle' && key !== 'waiting' && key !== 'permission' && key !== 'done' && age > 90000) key = 'idle';
+  const display = readCurrentDisplay();
+  let key = display.state || 'idle';
+  let detail = formatDisplayDetail(display);
 
   // 记录空闲起点：只要不是 idle 就刷新计时
   if (key !== 'idle') idleSince = Date.now();
@@ -184,7 +166,7 @@ function tick() {
     detail = '';
   }
 
-  const sig = key + '|' + detail;
+  const sig = `${key}|${detail}`;
   if (sig !== lastRendered) {
     applyState(key, detail);
     lastRendered = sig;
@@ -252,7 +234,6 @@ creatureEl.addEventListener('click', (e) => {
 });
 
 // 双击 = 露出控制按钮（躲起来 🙈 / 换色 🎨 / 关闭 ×），3.5 秒后自动藏回
-const { ipcRenderer } = require('electron');
 const closeBtn = document.getElementById('close');
 const hideBtn = document.getElementById('hide');
 const themeBtn = document.getElementById('theme');

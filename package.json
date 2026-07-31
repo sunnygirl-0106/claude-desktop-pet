@@ -1,10 +1,13 @@
 {
   "name": "claude-desktop-pet",
   "version": "1.0.0",
-  "description": "一个悬浮在桌面上的 Claude Code 小宠物，实时显示我正在干嘛 (｡･ᴗ･｡)",
+  "description": "一个可连接 Claude Code 与 Codex CLI 的悬浮桌面宠物 (｡･ᴗ･｡)",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "node --test",
+    "install:codex-hooks": "node scripts/install-codex-hooks.js",
+    "uninstall:codex-hooks": "node scripts/install-codex-hooks.js --uninstall"
   },
   "author": "you + Claude",
   "license": "MIT",
